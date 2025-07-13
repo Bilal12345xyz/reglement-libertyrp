@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Règlement Liberty RP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      height: 100vh;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
+
+
+
+    .sidebar {
+      width: 280px;
+      background-color: #2d0039;
+      padding: 20px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(0);
+      z-index: 1000;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #a855f7;
+      border-radius: 4px;
+    }
+
+    .sidebar img {
+      width: 100px;
+      border-radius: 12px;
+      display: block;
+      margin: 0 auto 20px auto;
+    }
+
+    .sidebar h1 {
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin: 5px 0;
+      transition: background 0.3s;
+      font-size: 14px;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active-link {
+      background-color: #511b60;
+    }
+
+    .toggle-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 22px;
+      background: none;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 1100;
+      background-color: #2d0039;
+      padding: 10px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .content {
+      margin-left: 280px;
+      padding: 40px 40px 40px 60px;
+      overflow-y: auto;
+      flex-grow: 1;
+      transition: margin-left 0.3s ease-in-out;
+      width: 100%;
+      position: relative;
+    }
+
+    .content.full-width {
+      margin-left: 0;
+    }
+
+    .section {
+      display: none;
+      margin-bottom: 60px;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    .section h2 {
+      color: #c084fc;
+      font-size: 26px;
+      border-bottom: 2px solid #c084fc;
+      padding-bottom: 5px;
+      user-select: text;
+    }
+
+    .logo-top-right {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      width: 80px;
+      border-radius: 12px;
+      user-select: none;
+    }
+
+    .discord-links {
+      margin-top: 20px;
+    }
+
+    .discord-links a {
+      display: inline-block;
+      margin-right: 10px;
+      background-color: #7289da;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    .discord-links a:hover {
+      background-color: #5b6eae;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed;
+        transform: translateX(-100%);
+      }
+
+      .sidebar.visible {
+        transform: translateX(0);
+      }
+
+      .content {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menu toggle button -->
+  <button class="toggle-button" onclick="toggleSidebar()" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+    <img src="https://i.imgur.com/21ibvFP.jpeg" alt="Logo Liberty RP" />
+    <h1>Règlement Liberty RP</h1>
+    <a href="#avant" onclick="showSection('avant', event)" class="active-link"><i class="fas fa-book-open"></i>Avant de commencer</a>
+    <a href="#discord" onclick="showSection('discord', event)"><i class="fab fa-discord"></i>Discord</a>
+    <a href="#general" onclick="showSection('general', event)"><i class="fas fa-globe"></i>Règlement général</a>
+    <a href="#discord-rules" onclick="showSection('discord-rules', event)"><i class="fas fa-server"></i>Règlement Discord</a>
+    <a href="#streaming" onclick="showSection('streaming', event)"><i class="fas fa-video"></i>Règlement streaming</a>
+    <a href="#coma" onclick="showSection('coma', event)"><i class="fas fa-heartbeat"></i>Infos RP | Coma</a>
+    <a href="#mort" onclick="showSection('mort', event)"><i class="fas fa-skull-crossbones"></i>Infos RP | Mort RP</a>
+    <a href="#legal" onclick="showSection('legal', event)"><i class="fas fa-balance-scale"></i>Règlement légal</a>
+    <a href="#illegal" onclick="showSection('illegal', event)"><i class="fas fa-exclamation-triangle"></i>Règlement illégal</a>
+    <a href="#forces" onclick="showSection('forces', event)"><i class="fas fa-user-shield"></i>Forces de l'ordre</a>
+    <a href="#sanctions" onclick="showSection('sanctions', event)"><i class="fas fa-gavel"></i>Sanctions</a>
+    <a href="#staff" onclick="showSection('staff', event)"><i class="fas fa-tools"></i>Sanctions staff</a>
+    <a href="#unban" onclick="showSection('unban', event)"><i class="fas fa-unlock"></i>Unban / Unjail</a>
+    <a href="#fin" onclick="showSection('fin', event)"><i class="fas fa-flag-checkered"></i>Mot de fin</a>
+    <a href="#vide" onclick="showSection('vide', event)"><i class=""></i></a>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content" id="content" tabindex="-1">
+    <img class="logo-top-right" src="https://i.imgur.com/21ibvFP.jpeg" alt="Logo Liberty RP" />
+    
+    <div id="avant" class="section active">
+  <h2>Avant de commencer</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <p>Le règlement doit être <strong>OBLIGATOIREMENT</strong> lu et accepté dès votre arrivée sur le serveur.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p>Tout non-respect de cette règle est <strong>sanctionnable</strong>. Il y a plusieurs règlements à prendre en compte, couvrant différents aspects tels que le <strong>général</strong>, <strong>Discord</strong> et <strong>streaming</strong>.</p>
+  </div>
+</div>
+
+
+    <div id="discord" class="section">
+      <h2>Discord</h2>
+      <div class="discord-links">
+        <a href="https://discord.gg/libertyfa" target="_blank" rel="noopener noreferrer">Discord Principal</a>
+        <a href="https://discord.gg/J2fMruFCKB" target="_blank" rel="noopener noreferrer">Discord Illégal</a>
+        <a href="https://discord.gg/NzCtyuSBqc" target="_blank" rel="noopener noreferrer">Discord Légal</a>
+      </div>
+    </div>
+
+    <div id="general" class="section">
+  <h2>Règlement général</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <p><strong>1 - Il est interdit</strong> de vendre vos possessions en jeu contre de l'argent réel. Seule la <strong>monnaie du jeu</strong> peut être utilisée pour les transactions entre joueurs.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>2 - Le RP à caractère sexuel</strong> est strictement interdit, ainsi que toute activité s'y rapportant.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>3 - L'utilisation d'un sac</strong> est obligatoire pour tout objet de grande dimension.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>4 - Les mod-menus et cheats</strong> sont totalement interdits et entraîneront un <strong>bannissement permanent</strong>.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>5 - Si une scène</strong> dans laquelle vous jouez ne vous plaît pas (HRP, etc.), vous devez quand même la terminer. Une fois la scène finie, vous pouvez faire un <strong>report en jeu</strong> ou créer un ticket sur notre Discord avec un enregistrement vidéo ou une capture d'écran.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>6 - En cas de danger</strong>, il est interdit de retourner en <strong>zone protégée (safe zone)</strong>. Cela s'appelle un <strong>retour en zone safe</strong>.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>7 - Les insultes roleplay</strong> sont tolérées, sauf les suivantes qui sont <strong>interdites</strong> :</p>
+    <ul style="color: #cbb9ff; margin-left: 20px; list-style-type: disc;">
+      <li>Insultes parentales</li>
+      <li>Harcèlement de tout type</li>
+      <li>Propos sexistes ou racistes</li>
+      <li>Attaques liées à un handicap physique ou mental</li>
+    </ul>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>8 - Les modifications</strong> de votre jeu directement dans les fichiers de FiveM pour obtenir un avantage sont <strong>interdites</strong>. Exemples :</p>
+    <ul style="color: #cbb9ff; margin-left: 20px; list-style-type: disc;">
+      <li>Retrait des props (no props)</li>
+      <li>Retrait du brouillard (no fog)</li>
+      <li>Retrait de la nuit</li>
+      <li>Car boost</li>
+      <li>Boost de dégâts, tir rapide (AI)</li>
+      <li>Speed run</li>
+    </ul>
+    <p style="margin-top: -10px;">Cependant, un <strong>pack graphique</strong> pour améliorer les textures et l'immersion roleplay est permis.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>9 - Il est strictement interdit</strong> de faire de la publicité pour un autre serveur que Liberty RP.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+  </div>
+</div>
+
+
+    <div id="discord-rules" class="section">
+  <h2>Règlement Discord</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <p><strong>1 - Discord</strong> est une plateforme de communication en ligne qui permet aux utilisateurs d'échanger via des messages textuels, vocaux ou vidéo.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>2 - Tout comportement discriminatoire ou harcelant</strong> envers les autres utilisateurs est strictement proscrit. Cela inclut les commentaires <strong>racistes, sexistes, transphobes, homophobes</strong> ou toute autre forme de harcèlement.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>3 - Il est formellement interdit</strong> de partager sur le serveur des contenus <strong>illégaux ou inappropriés</strong> tels que la pornographie, les menaces, la violence ou toute autre forme de contenu inapproprié.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>4 - L'envoi répété de messages non pertinents ou spam</strong> sur le serveur est strictement interdit.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>5 - Le non-respect de ces règles</strong> peut entraîner des avertissements, des exclusions temporaires ou permanentes du serveur.</p>
+  </div>
+</div>
+
+
+    <div id="streaming" class="section">
+  <h2>Règlement streaming</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <p><strong>1 - Le streamhack</strong> n’est pas toléré.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>2 - La modération du serveur</strong> se réserve le droit de regarder les streams Twitch et de les utiliser comme preuve d'infraction aux règlements, même si les actions sont commises par le joueur qui stream.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>3 - Si vous êtes un streamer actif sur Liberty RP</strong> et que vous souhaitez représenter le serveur, il y a un salon “Community Manager” sur notre Discord où vous êtes autorisé à promouvoir votre Live/Stream</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>4 - En stream</strong>, veuillez éviter de diffuser les points chauds (drogues et blanchiment). C’est aux joueurs de découvrir ces points eux-mêmes en roleplay.</p>
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+    <p><strong>5 - Sachez que lorsque vous streamez</strong> du contenu sur la ville de Liberty, les clips de vos meilleurs moments peuvent être utilisés à des fins de compilation YouTube ou TikTok.</p>
+  </div>
+</div>
+
+
+    <div id="coma" class="section">
+  <h2>Information RP | Coma</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <h3 style="color:#c084fc; margin-top:0;">Inconscience et limitations</h3>
+    <p>Lorsqu'un joueur est à terre (coma), il est <strong>inconscient</strong>. Pendant cette période, vous ne pouvez ni répondre, ni mémoriser ce que disent les autres joueurs. Il est uniquement possible de <strong>gémir</strong> pour indiquer votre présence.<br>
+    <strong>Attention :</strong> Lors d'un coma, il est inutile de répéter l'appel aux ambulanciers. Le spam d'appels est <strong>interdit</strong> et sera sanctionné.</p>
+
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+
+    <h3 style="color:#c084fc;">Annulation d'appel EMS</h3>
+    <p>Il est <strong>strictement interdit</strong> d'annuler un appel EMS une fois qu'ils sont en route ou déjà présents en ville. Toute tentative d'annulation abusive sera <strong>sanctionnée</strong>.</p>
+
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+
+    <h3 style="color:#c084fc;">Réanimation et souvenirs</h3>
+    <p>Lorsque vous êtes réanimé, si vous êtes toujours dans le coma (avec le message “Vous êtes dans le coma”), certains détails généraux peuvent vous revenir à la mémoire, mais pas les faits précis tels que les noms des personnes ou les événements exacts. Vous ne pourrez pas vous souvenir des circonstances exactes de votre coma.</p>
+
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+
+    <h3 style="color:#c084fc;">Soins médicaux après coma</h3>
+    <p>Après avoir été dans le coma, il est impératif de se faire soigner par un <strong>médecin EMS</strong> et non par d’autres unités. Même si vous avez été transporté par d'autres unités, vous devez toujours passer par une scène médicale avec un médecin EMS pour un traitement adéquat.</p>
+
+    <hr style="border: 0; border-top: 1px solid #511b60; margin: 12px 0;">
+
+    <h3 style="color:#c084fc;">Si aucun médecin n'est en service</h3>
+    <p>Si aucun médecin EMS n’est disponible et que vous avez été transporté à l'hôpital par les unités X, vous devez considérer que vous avez reçu les premiers soins nécessaires. Vous devrez jouer les blessures en fonction de la situation survenue avant votre coma. Une fois un médecin EMS disponible, vous devrez effectuer une visite de contrôle pour suivre l’évolution de vos blessures et recevoir des soins supplémentaires si nécessaire.</p>
+  </div>
+</div>
+
+
+    <div id="mort" class="section">
+  <h2>Information RP | Mort RP</h2>
+  <div style="border-left: 4px solid #a855f7; padding-left: 16px; color: #ddd; font-size: 16px; line-height: 1.6;">
+    <h3 style="color:#c084fc; margin-top:0;">Mort sur un joueur</h3>
+    <p>Si vous souhaitez effectuer une <strong>mort RolePlay</strong> sur un joueur, vous devez impérativement soumettre un dossier Google Doc via le système de ticket dans le canal « ticket ».</p>
+    
+    <p><strong>Le dossier doit inclure :</strong></p>
+    <ul style="margin-left: 20px;">
+      <li>Les motivations et causes détaillées de la mort.</li>
+      <li>La carte d'identité de la personne concernée.</li>
+      <li>Précision et détails sont essentiels pour éviter tout malentendu.</li>
+    </ul>
+
+    <h3 style="color:#c084fc;">Validation du dossier</h3>
+    <p>Si votre dossier est validé, sachez que vous serez également soumis à une <strong>mort RolePlay</strong> si vous tombez dans le coma durant la scène, que ce soit par la personne concernée ou ses alliés.</p>
+
+    <p>La personne victime de la mort RolePlay sera informée de la situation uniquement après l'exécution de la mort pour éviter le <strong>metagaming</strong>, où la personne pourrait anticiper la situation en sachant qu'elle n'a plus rien à perdre.</p>
+  </div>
+</div>
+
+
+    <div id="legal" class="section">
+  <h2>Règlement légal</h2>
+  <div style="background: #2d0039; border-radius: 8px; padding: 20px; color: #ddd; font-size: 16px; line-height: 1.6; max-width: 720px;">
+
+    <p><strong>1 - Obligations des patrons d’entreprise :</strong><br>
+    En tant que patron, vous devez <strong>payer vos employés chaque semaine</strong>. Le non-respect est sanctionné.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>2 - Double emploi interdit :</strong><br>
+    Il est <strong>strictement interdit</strong> d’avoir un double métier ou d’être employé dans plusieurs entreprises.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>3 - Patron exclusif :</strong><br>
+    Si vous possédez une entreprise, vous en êtes automatiquement le patron et ne pouvez pas être employé ailleurs.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>4 - Activités illégales interdites :</strong><br>
+    Policier ou ambulancier ne doit en aucun cas participer à des activités illégales, même hors service. C’est considéré comme être <strong>ripou</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>5 - Usurpation d’identité :</strong><br>
+    Il est interdit de se faire passer pour un agent ou d’utiliser vos permissions LSPD/EMS hors service.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>6 - Taxe sur les entreprises légales :</strong><br>
+    Chaque patron doit verser une <strong>taxe minimum de 2%</strong> sur l’argent de la société. Le refus est sévèrement puni.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>7 - Restrictions sur les véhicules :</strong><br>
+    Lors des braquages ou prises d’otages, seuls certains véhicules comme l’<strong>A45</strong> sont autorisés ; motos et véhicules importés sont interdits.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>8 - Armes EMS :</strong><br>
+    Les employés EMS ne peuvent pas porter d’armes en service, même avec un PPA. Les armes doivent rester en appartement.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>9 - Protection des EMS :</strong><br>
+    Tuer un EMS est strictement interdit et entraîne des sanctions (jail).</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>10 - Vente d’objets illégaux :</strong><br>
+    Interdite dans le salon de discussion.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>11 - Confiscation d’armes :</strong><br>
+    En cas de braquage, la LSPD peut confisquer uniquement l’arme utilisée lors de l’arrestation.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>12 - Vente d’entreprises :</strong><br>
+    Strictement interdite entre joueurs.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>13 - Usage des véhicules et tenues :</strong><br>
+    Utilisation uniquement lors de l’exercice du métier. Seuls les agents de la <strong>D.O.A</strong> peuvent patrouiller en voiture banalisée.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>14 - Interdiction de camper :</strong><br>
+    Les membres du LSPD ne doivent pas camper sur les points de go fast mais les intercepter directement.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>15 - Descente sur points chauds :</strong><br>
+    Autorisée uniquement avec l’autorisation d’un <strong>Gérant Légal</strong>.</p>
+  </div>
+</div>
+
+    <div id="illegal" class="section">
+  <h2>Règlement illégal</h2>
+  <div style="background: #1b0e2f; border-radius: 8px; padding: 20px; color: #dcd6f7; font-size: 16px; line-height: 1.6; max-width: 720px;">
+
+    <p><strong>1 - Racket et supériorité numérique :</strong><br>
+    Un agent du LSPD ne compte pas pour deux personnes. Si vous souhaitez braquer un agent, vous <strong>ne devez pas être en supériorité numérique</strong>. Si vous êtes en infériorité, vous ne pouvez pas braquer.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>2 - Conditions de braquage :</strong><br>
+    Lors d'un braquage, vous devez être au moins deux braqueurs avec un otage. Un seul véhicule par supérette, modèle 4 places, <strong>interdiction des véhicules importés sauf l’A45 AMG</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>3 - Respect des otages :</strong><br>
+    Vous <strong>ne pouvez pas racketter ni fouiller votre otage</strong> pour récupérer ses possessions.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>4 - Interdiction de braquer les forces de l’ordre :</strong><br>
+    Il est interdit de braquer les forces de l'ordre arrivant sur les lieux d’un braquage ou lors d’une prise d’otage (PO).</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>5 - Vols autorisés :</strong><br>
+    Il est autorisé de voler téléphones, chargeurs, alcool ou argent sale perquisitionné par la police elle-même.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>6 - Limite des prises d’otages en supérettes :</strong><br>
+    Le montant maximal est plafonné à <strong>50k$ par otage</strong>, civil ou agent.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>7 - Montants des rançons maximales :</strong><br>
+      <ul style="margin-left: 20px;">
+        <li>100k$ pour un civil.</li>
+        <li>250k$ pour un agent LSPD (hors État-Major).</li>
+        <li>300k$ pour un membre de l'État-Major du LSPD.</li>
+        <li>750k$ pour un ministre ou agent gouvernemental.</li>
+        <li>1M$ pour le Secrétaire d’État ou le Vice-Gouverneur.</li>
+        <li>2,5M$ pour le Gouverneur.</li>
+      </ul>
+    En cas de refus d’une partie, le RP de négociation s’arrête et un staff doit intervenir. Toute situation avec déséquilibre flagrant entraînera l’annulation ou l’arrêt du RP.<br>
+    Seules les organisations reconnues ou gangs peuvent effectuer prises d’otages ou braquages (limitée à 3 par semaine).</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>8 - Tir interdit sans raison valable :</strong><br>
+    Tirer dans le quartier ou la villa d’un gang ou organisation sans raison est sanctionnable par <strong>jail</strong> pour non-respect du mass RP.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>9 - Interdiction des alliances :</strong><br>
+    Les alliances entre organisations ou gangs sont interdites.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>10 - Braquage de territoire :</strong><br>
+    Vous pouvez braquer un territoire qui n’est pas le vôtre uniquement si vous êtes <strong>au moins cinq de plus que les défenseurs</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>11 - Gestion des conflits :</strong><br>
+    Avant de porter plainte contre une organisation, discutez avec eux. Si rien ne s’arrange, ouvrez un ticket support.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>12 - Moyens de guerre :</strong><br>
+    En cas de déclaration de guerre, les moyens autorisés sont : CVC, prises d’otages (PO), descentes.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>13 - Durée et déroulement des guerres :</strong><br>
+    Une guerre ne doit pas durer plus de 3 jours avec une scène ou descente par jour. Si l’adversaire quitte la ville, victoire par forfait.<br>
+    Les raisons valables sont régler des comptes ou récupérer un point revendiqué.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>14 - Hiérarchie entre gangs et organisations :</strong><br>
+    Un gang doit craindre une organisation, même plus massive. Mafias/cartels sont plus puissants par cohérence RP.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>15 - Territoires réservés :</strong><br>
+    Le territoire des Wardogs est réservé aux organisations, la fête foraine aux gangs. Pas d’inversion.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>16 - Sacoches et armes lourdes :</strong><br>
+    Sacoches et parachutes <strong>ne comptent pas comme sacs</strong> pour porter des armes lourdes (AK47, G36, M4 canon scié). Non-respect = risque de wipe.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>17 - Interdiction des "PEDS" :</strong><br>
+    Il est interdit d’utiliser des "PEDS" lors d’opérations avec votre organisation ou gang.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>18 - Vrais otages :</strong><br>
+    Pour braquage de banque ou supérette, les otages <strong>ne doivent pas être des joueurs consentants ou membres du groupe servant de faux otages</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>19 - Cohérence RP :</strong><br>
+    Les groupes officiels doivent respecter la cohérence RP (couleurs véhicules, tenues). Pas d’hélicoptères ou bateaux pour gangs.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>20 - Déroulement braquage :</strong><br>
+    Commencez par des négociations, suivies d’une course-poursuite. Vous devez avoir des otages : <strong>1 otage + 2 braqueurs pour supérette, 4 otages + 6 braqueurs pour banque</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>21 - Rappel hiérarchie :</strong><br>
+    Un gang doit craindre une organisation, même plus massive, cohérence RP mafias/cartels plus puissants.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>23 - Déclaration de guerre :</strong><br>
+    Soumettre un GDOC et poster dans ticket support. Attendre réponse d’un Gérant Glo.<br>
+    En cas de défaite, attendre 2 semaines avant une nouvelle guerre contre même organisation/gang.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>26 - Bannis en guerre :</strong><br>
+    Toute personne bannie pendant une guerre est considérée comme morte.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>27 - Interdiction de WinRP :</strong><br>
+    Strictement interdit d’utiliser techniques de WinRP (ex : poser bombe sur otage, explosifs sans permission).<br>
+    Pour scènes terrorisme, contacter GL via ticket Discord.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>28 - Usage véhicules off-road :</strong><br>
+    Interdiction off-road avec véhicule inadapté. Seuls véhicules Off-Road autorisés.<br>
+    Pneus tout-terrain ne rendent pas apte à tous terrains. Route non asphaltée limitée à 80 km/h.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>29 - Saisie par LSPD :</strong><br>
+    Interdiction de récupérer objet saisi par LSPD, y compris argent ou argent sale.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>30 - Arme face au LSPD :</strong><br>
+    Sortir une arme devant un LSPD implique que l’arme peut être saisie.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>31 - Limite négociations :</strong><br>
+    Interdiction de demander plus de <strong>5,000$ par otage</strong> lors des négociations braquage.</p>
+    <hr style="border: 0; height: 1px; background: #7a4fff; margin: 16px 0;">
+
+    <p><strong>32 - Tir sans raison valable :</strong><br>
+    Tir dans quartier/villa d’un gang ou organisation sans raison = <strong>jail 30 minutes</strong> pour mass RP.</p>
+
+  </div>
+</div>
+
+
+    <div id="forces" class="section">
+  <h2>Rôles des forces de l'ordre</h2>
+  <div style="background: #2d0039; border-radius: 8px; padding: 20px; color: #ddd; font-size: 16px; line-height: 1.6; max-width: 720px;">
+
+    <p><strong>POUR LA LSPD 👮‍♂️</strong></p>
+
+    <p><strong>Mission de maintien de l'ordre :</strong><br>
+    Les agents du <strong>LSPD</strong> sont responsables de faire respecter la loi à Los Santos en traquant les criminels, en procédant à des arrestations et en préservant l'ordre public.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Surveillance active :</strong><br>
+    Les membres du <strong>LSPD</strong> effectuent des patrouilles dans les rues de Los Santos afin de garantir la sécurité des résidents, de dissuader la criminalité et de répondre aux situations d'urgence.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Investigations criminelles :</strong><br>
+    Le <strong>LSPD</strong> mène des enquêtes sur les activités criminelles, collecte des éléments de preuve et poursuit les auteurs pour les traduire en justice.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Réponse rapide :</strong><br>
+    En cas d'urgence, tels que des fusillades, des vols à main armée ou des accidents de la route, le <strong>LSPD</strong> intervient rapidement pour gérer la situation et assurer la sécurité publique.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Collaboration inter-services :</strong><br>
+    Les agents du <strong>LSPD</strong> travaillent en étroite collaboration avec d'autres organismes d'urgence, tels que les <strong>BCSO</strong>, les <strong>US MARSHALS</strong>, la <strong>CIA</strong>, le <strong>FBI</strong> et le <strong>SWAT</strong>, pour faire face à des situations complexes et garantir la sûreté publique.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Contrainte :</strong><br>
+    Le <strong>LSPD</strong> est limité à un effectif de <strong>100 agents</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Restriction :</strong><br>
+    Interdiction de patrouiller dans le secteur <strong>Nord</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+
+    <p><strong>POUR LA BCSO 🚓</strong></p>
+
+    <p><strong>Application des lois locales :</strong><br>
+    Le <strong>BCSO</strong> est chargé de veiller au respect des lois et au maintien de l'ordre dans le comté de Blaine.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Surveillance active :</strong><br>
+    Les membres du <strong>BCSO</strong> effectuent des patrouilles dans diverses zones du comté de Blaine afin d'assurer la sécurité des résidents virtuels et de répondre aux appels d'urgence.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Enquêtes criminelles :</strong><br>
+    Le <strong>BCSO</strong> mène des enquêtes sur les crimes, les accidents et autres incidents survenant dans sa juridiction. Cela implique la collecte de preuves, l'interrogatoire des suspects et la résolution des affaires.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Aide aux citoyens :</strong><br>
+    Les membres du <strong>BCSO</strong> fournissent souvent une assistance aux résidents virtuels qui nécessitent de l'aide, qu'il s'agisse d'accidents de la route, de vols ou d'autres situations d'urgence.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Collaboration inter-agences :</strong><br>
+    Le <strong>BCSO</strong> collabore également avec d'autres organismes d'application de la loi tels que la <strong>LSPD</strong>, le <strong>FBI</strong>, la <strong>CIA</strong>, le <strong>SWAT</strong> et les <strong>US MARSHALS</strong> pour résoudre les crimes et maintenir la sécurité dans la région.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Contrainte :</strong><br>
+    Le <strong>BCSO</strong> est limité à un effectif de <strong>50 agents</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Restriction :</strong><br>
+    Interdiction de patrouiller dans la partie <strong>Sud</strong> de la ville.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+
+    <p><strong>POUR LE SWAT 💂</strong></p>
+
+    <p><strong>Interventions en cas de prise d'otages :</strong><br>
+    Le <strong>SWAT</strong> est principalement sollicité pour intervenir lors de situations de prise d'otages, que ce soit dans des institutions financières telles que la Pacifique Banque ou des bâtiments gouvernementaux.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Gestion des troubles civils :</strong><br>
+    En cas de débordements lors de manifestations ou de troubles civils mettant en péril la sécurité publique, le <strong>SWAT</strong> peut être déployé pour rétablir l'ordre.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Soutien lors d'opérations anti-crime organisé :</strong><br>
+    Le <strong>SWAT</strong> est mobilisé pour assister les forces de l'ordre lors de raids visant à démanteler des organisations criminelles ou à appréhender des individus dangereux.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Sécurisation de personnalités ou de convois sensibles :</strong><br>
+    Le <strong>SWAT</strong> est chargé de fournir une protection rapprochée à des personnalités de haut rang ou d'assurer la sécurité de convois transportant des biens précieux ou des informations sensibles.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Contrainte :</strong><br>
+    L'équipe <strong>SWAT</strong> est restreinte à un effectif de <strong>25 agents</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Restriction :</strong><br>
+    Les activités de patrouille et d'enquête sont interdites.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+
+    <p><strong>POUR LE FBI 🕵️</strong></p>
+
+    <p><strong>Enquêtes sur les crimes graves :</strong><br>
+    Le <strong>FBI</strong> est chargé de mener des enquêtes sur des crimes graves, incluant le terrorisme, le trafic de drogue, le blanchiment d'argent, les homicides et les enlèvements, dans le cadre du jeu.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Déstructuration du crime organisé :</strong><br>
+    Le <strong>FBI</strong> œuvre à démanteler les organisations criminelles et à enquêter sur leurs activités illicites, y compris le crime organisé, les gangs de rue et les cartels.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Surveillance et infiltration :</strong><br>
+    Les agents du <strong>FBI</strong> sont chargés de surveiller des individus suspects, de s'infiltrer dans des gangs ou des organisations criminelles afin de recueillir des preuves et des renseignements, et d'appréhender les criminels impliqués.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Protection des intérêts nationaux :</strong><br>
+    Le <strong>FBI</strong> peut être impliqué dans la protection des intérêts nationaux, notamment la sécurité des infrastructures critiques, la lutte contre le terrorisme intérieur et la prévention d'attaques contre des cibles sensibles.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Collaboration inter-agences :</strong><br>
+    Le <strong>FBI</strong> collabore avec d'autres forces de l'ordre, telles que la police locale, le <strong>SWAT</strong> et d'autres agences fédérales, pour mener à bien des opérations conjointes et partager des renseignements.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Contrainte :</strong><br>
+    L'équipe du <strong>FBI</strong> est limitée à <strong>20 agents</strong>.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Interdiction :</strong><br>
+    L'exercice de patrouille et les descentes sont exclus de ses attributions s'il n'y a pas de présence simultanée des forces de l'ordre locales (<strong>LSPD</strong>/<strong>BCSO</strong>/<strong>SWAT</strong>).</p>
+
+  </div>
+</div>
+
+
+    <div id="sanctions" class="section">
+  <h2>Sanctions</h2>
+  <div style="background: #2d0039; border-radius: 8px; padding: 20px; color: #ddd; font-size: 16px; line-height: 1.6; max-width: 720px;">
+
+    <p><strong>RÈGLEMENT DES SANCTIONS ET CONTESTATIONS</strong></p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Article I : Sanctions administratives</strong><br>
+    L’administration peut appliquer diverses sanctions en fonction des infractions commises. Ces sanctions sont déterminées en se référant à la charte des sanctions en vigueur.</p>
+
+    <p><strong>Exemples de sanctions possibles :</strong></p>
+    <ul>
+      <li><strong>Avertissement (Warn)</strong> : Pour des infractions mineures ou premières erreurs.</li>
+      <li><strong>Prison RP (Jail)</strong> : Pour des infractions liées au non-respect des règles en jeu.</li>
+      <li><strong>Wipe</strong> : Suppression de votre progression ou inventaire en cas d’exploitation de bugs ou de cheat.</li>
+      <li><strong>Ban temporaire</strong> : Blocage de votre compte pour une durée définie (de quelques heures à plusieurs jours).</li>
+      <li><strong>Ban permanent</strong> : Exclusion définitive du serveur en cas de faute grave ou de récidive répétée.</li>
+    </ul>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Article II : Contestation des sanctions</strong><br>
+    Si vous souhaitez contester une sanction, vous devez ouvrir un ticket via la section <strong>"Support Tickets"</strong> sur Discord.<br>
+    L’administrateur ayant appliqué la sanction devra être présent pour expliquer les raisons de cette décision.<br>
+    Vous aurez le droit d’exposer votre version des faits ou, si nécessaire, de présenter des excuses aux personnes concernées.</p>
+
+    <p><strong>Sanctions en cas d’abus de contestations :</strong><br>
+    Toute contestation abusive ou irrespectueuse pourra entraîner un prolongement des sanctions ou une interdiction temporaire de contester des décisions administratives.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Article III : Règles pour les bans permanents</strong><br>
+    En cas de bannissement permanent, les seules options pour demander un <strong>"unban"</strong> sont les suivantes :</p>
+    <ul>
+      <li>Ouvrir un ticket-support et dialoguer avec l’administrateur concerné pour tenter de régler la situation de manière constructive.</li>
+      <li>Effectuer un achat de débannissement via la boutique Liberty RP.</li>
+    </ul>
+
+    <p><strong>Remarque :</strong> Le débannissement n’est pas garanti et reste soumis à l’approbation de l’administration. Toute tentative de fraude ou de contournement des sanctions sera lourdement punie.</p>
+    <hr style="border: 0; height: 1px; background: #a855f7; margin: 16px 0;">
+
+    <p><strong>Article IV : Signalement d’abus de permissions</strong><br>
+    En cas d’abus de pouvoir ou de permissions par un membre du staff, vous devez impérativement ouvrir un ticket-support pour signaler la situation.<br>
+    Chaque cas sera minutieusement examiné, et des mesures seront prises en fonction de la gravité des faits.</p>
+
+    <p><strong>Sanctions possibles pour un staff abusif :</strong></p>
+    <ul>
+      <li><strong>Avertissement interne (Warn Staff)</strong></li>
+      <li><strong>Suspension temporaire</strong> des permissions.</li>
+      <li><strong>Rétrogradation (Demote)</strong> à un rôle inférieur.</li>
+      <li><strong>Exclusion définitive (Ban Staff)</strong> en cas de récidive ou d’abus grave.</li>
+    </ul>
+
+  </div>
+</div>
+
+
+    <div id="staff" class="section">
+  <h2>Sanctions Staff</h2>
+
+  <div style="max-width: 720px; display: flex; justify-content: space-between; background: #4c007a; border-radius: 8px; padding: 15px 20px; margin-bottom: 12px; color: #fff; font-size: 16px; font-weight: bold;">
+    <div style="flex: 2;">Les Causes</div>
+    <div style="flex: 1; text-align: center;">Les Sanctions</div>
+  </div>
+
+  <div style="max-width: 720px;">
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Report en scène</strong></div><div style="flex: 1; text-align: center;">Jail 15 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Usebug</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Freekill sur EMS</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Alt f4 sur scène ou en interadmin</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Revenge Kill</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Troll</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Misogynie</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Cheat</strong></div><div style="flex: 1; text-align: center;">Bannissement Permanent</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Retour sur scène</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Retour Quartier/Zone Safe</strong></div><div style="flex: 1; text-align: center;">Jail 20 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Parle coma</strong></div><div style="flex: 1; text-align: center;">Jail 20 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Freekill en mass</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Soundboard (non rp)</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Freeshoot</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Fausse tenue staff</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Parler HRP</strong></div><div style="flex: 1; text-align: center;">Jail 30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Freekill joueur en interadmin</strong></div><div style="flex: 1; text-align: center;">Aucune Sanction</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Troll/Freekill sur scène (op ou événement)</strong></div><div style="flex: 1; text-align: center;">Jail 3h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Trash (selon propos)</strong></div><div style="flex: 1; text-align: center;">Jail 10-30 Min</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Pub TikTok</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Nobush</strong></div><div style="flex: 1; text-align: center;">Jail 1h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Double RP</strong></div><div style="flex: 1; text-align: center;">Jail 3h</div></div>
+    <div style="background: #2d0039; border-radius: 8px; padding: 15px 20px; margin-bottom: 10px; color: #ddd; display: flex; justify-content: space-between;"><div style="flex: 2;"><strong>Racisme</strong></div><div style="flex: 1; text-align: center;">Jail 3h</div></div>
+  </div>
+</div>
+
+
+    <div id="unban" class="section">
+  <h2>Unban / Unjail</h2>
+  <p>
+    Si vous avez été banni ou placé en prison de manière permanente par erreur ou sans raison,
+    vous devez suivre la procédure suivante pour faire appel :
+  </p>
+  <p>
+    Rejoignez le serveur Discord de Liberty RP
+  </p>
+  <p>
+    Rendez-vous dans le salon 🎫｜<a href="https://discord.com/channels/1356235324925284482/1357147745118326784" target="_blank" rel="noopener noreferrer" style="color: #4c007a; text-decoration: underline;">ticket</a>
+  </p>
+  <p>
+    Sélectionnez l’option Demande D'unban
+  </p>
+  <p>
+    Patientez jusqu’à ce qu’un membre de l’équipe du staff vous réponde.
+  </p>
+</div>
+
+
+    <div id="fin" class="section">
+  <h2>Mot de fin</h2>
+
+  
+  <p>
+    Nous vous remercions sincèrement d’avoir pris le temps de lire attentivement le règlement de <strong>Liberty RP</strong>.<br>
+    Le <strong>respect</strong> de ces règles est essentiel pour garantir un environnement de jeu <strong>sain, équilibré et agréable</strong> pour tous les membres de notre communauté.
+  </p>
+  <p>
+    Nous espérons que vous trouverez sur <strong>Liberty RP</strong> une expérience <strong>immersive, enrichissante et divertissante</strong>.<br>
+    Notre équipe est engagée à vous offrir un cadre de jeu de qualité, où chacun peut évoluer sereinement.
+  </p>
+  <p>
+    N’hésitez pas à contacter le <strong>staff</strong> en cas de questions ou de besoin d’assistance.<br>
+    Nous vous souhaitons une excellente aventure parmi nous sur <strong>Liberty RP</strong> !
+  </p>
+</div>
+
+
+
+
+  </main>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const content = document.getElementById('content');
+      sidebar.classList.toggle('hidden');
+      content.classList.toggle('full-width');
+    }
+
+    function showSection(id, event) {
+      event.preventDefault();
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+
+      // Gérer l'activation du lien dans la sidebar
+      document.querySelectorAll('.sidebar a').forEach(link => {
+        link.classList.remove('active-link');
+      });
+      const activeLink = document.querySelector(`.sidebar a[href="#${id}"]`);
+      if(activeLink) activeLink.classList.add('active-link');
+
+      // Pour l'accessibilité : focus sur le contenu principal
+      const content = document.getElementById('content');
+      content.focus();
+    }
+  </script>
+</body>
+</html>
